@@ -1,6 +1,39 @@
+package mainPKG;
+import java.util.ArrayList;
 
-public class MyPandas {
-	public MyDataFrame head(int n) {
+public class MyDataFrame {
+    private ArrayList<String> state; 
+    private ArrayList<String> gender;
+    private ArrayList<Integer> year;
+    private ArrayList<String> name;
+    private ArrayList<Integer> count;
+    
+    public MyDataFrame(ArrayList<String> state, ArrayList<String> gender, ArrayList<Integer> year, 
+    		ArrayList<String> name, ArrayList<Integer> count) {
+    		this.state = state;
+    		this.gender = gender;
+    		this.year = year;
+    		this.name = name;
+    		this.count = count;  	
+    }
+    public ArrayList<String> getState() {
+		return(this.state);
+    }
+    public ArrayList<String> getGender() {
+		return(this.gender);
+    }
+    public ArrayList<Integer> getYear() {
+		return(this.year);
+    }
+    public ArrayList<String> getName() {
+    		return(this.name);
+    }
+    public ArrayList<Integer> getCount() {
+    		return(this.count);
+    }
+
+	
+	/*public MyDataFrame head(int n) {
 		return rows;
 	}
 	
@@ -70,5 +103,5 @@ public class MyPandas {
 	
 	public Object getMax(String label) {
 		return max;
-	}
+	} */
 }
