@@ -1,6 +1,9 @@
 package mainPKG;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Hashtable;
+
 
 
 
@@ -86,7 +89,7 @@ public class MyDataFrame {
 		return new MyDataFrame(col0, col1, col2, col3, col4, this.getColNames());
 	}
 
-	/*
+
 	public String dType(int index) {
 		String[] columns = {"String", "String", "Integer", "String", "Integer"};
 		if(index > 5 | index < 0 ) {
@@ -107,7 +110,7 @@ public class MyDataFrame {
 			return "Not a valid index.";
 		}
 		return hashtable.get(name);
-	}*/
+	}
 
 	public MyDataFrame slice(int index) {
 		MyDataFrame result = new MyDataFrame();
@@ -234,10 +237,11 @@ public class MyDataFrame {
 //		return sortedData;
 //	}
 //	
-//	public Object getMin(int index) {
-//		Object min; 
-//		return min;
-//	}
+	public Object getMin(int index) {
+		@SuppressWarnings("unchecked")
+		ArrayList<Integer> meow = (ArrayList<Integer>)(ArrayList<?>) this.col2;
+		return Collections.max(meow);
+	}
 //	
 //	public Object getMin(String label) {
 //		return min;
@@ -250,5 +254,6 @@ public class MyDataFrame {
 //	public Object getMax(String label) {
 //		return max;
 //	} 
+
 	
 }

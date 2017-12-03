@@ -13,8 +13,7 @@ public class MyTest {
 		System.out.println(test.tail(5).getCol4());
 		System.out.println(test.getCol3().get(4).getClass());
 		System.out.println(test.getColNames());
-		System.out.println(test.slice("name").getCol3());
-		
+		System.out.println(test.getMin(3));
 		
 
 		
