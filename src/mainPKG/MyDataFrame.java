@@ -2,199 +2,120 @@ package mainPKG;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Hashtable;
-
-
 
 
 public class MyDataFrame {
     
-    private ArrayList<Object> col0; 
-    private ArrayList<Object> col1;
-    private ArrayList<Object> col2;
-    private ArrayList<Object> col3;
-    private ArrayList<Object> col4;
-    HashMap<String,Integer> colNames = new HashMap<String,Integer>();
+//	these should probably be private -- diminishing returns
+    public ArrayList<ArrayList<?>> data; 
+    public HashMap<String,Integer> colNames = new HashMap<String,Integer>();
+    public HashMap<String,String> colTypes = new HashMap<String,String>();
+
     
-    public MyDataFrame() {
-    		this.col0 = null;
-    		this.col1 = null;
-    		this.col2 = null;
-    		this.col3 = null;
-    		this.col4 = null; 
-    		this.colNames = null;
-    }
-    
-    public MyDataFrame(ArrayList<Object> col0, ArrayList<Object> col1, ArrayList<Object> col2, 
-    		ArrayList<Object> col3, ArrayList<Object> col4, HashMap<String,Integer> colNames) {
-    		this.col0 = col0;
-    		this.col1 = col1;
-    		this.col2 = col2;
-    		this.col3 = col3;
-    		this.col4 = col4; 
+    public MyDataFrame(ArrayList<ArrayList<?>> data, HashMap<String,Integer> colNames, HashMap<String,String> colTypes) {
+    		this.data = data;
     		this.colNames = colNames;
+    		this.colTypes = colTypes; 
     }
-    public ArrayList<Object> getCol0() {
-		return(this.col0);
-    }
-    public ArrayList<Object> getCol1() {
-		return(this.col1);
-    }
-    public ArrayList<Object> getCol2() {
-		return(this.col2);
-    }
-    public ArrayList<Object> getCol3() {
-		return(this.col3);
-    }
-    public ArrayList<Object> getCol4() {
-		return(this.col4);
-    }
+
+    public MyDataFrame() {
+		this.data = new ArrayList<ArrayList<?>>();
+}
     public HashMap<String,Integer> getColNames() {
 		return(this.colNames);
     }
     
-    private void setCol0(ArrayList<Object> col) {
-    		this.col0 = col;
-    }
-    private void setCol1(ArrayList<Object> col) {
-		this.col1 = col;
-    }
-    private void setCol2(ArrayList<Object> col) {
-		this.col2 = col;
-    }
-    private void setCol3(ArrayList<Object> col) {
-		this.col3 = col;
-    }
-    private void setCol4(ArrayList<Object> col) {
-		this.col4 = col;
+    private void setColNames(HashMap<String,Integer> colNames) {
+		this.colNames = colNames;
     }
     
+    private void setColTypes(HashMap<String,String> colTypes) {
+		this.colTypes = colTypes;
+    }
+    
+    
 	public MyDataFrame head(int n) {
-		ArrayList<Object> col0 = new ArrayList<Object>(this.col0.subList(0, n));
-		ArrayList<Object> col1 = new ArrayList<Object>(this.col1.subList(0, n));
-		ArrayList<Object> col2 = new ArrayList<Object>(this.col2.subList(0, n));
-		ArrayList<Object> col3 = new ArrayList<Object>(this.col3.subList(0, n));
-		ArrayList<Object> col4 = new ArrayList<Object>(this.col4.subList(0, n));
-	    
-		return new MyDataFrame(col0, col1, col2, col3, col4, this.getColNames());
+		MyDataFrame result = new MyDataFrame();
+		for(int i = 0; i < this.data.size(); i++) {
+			ArrayList<?> subset  =  new ArrayList<>(this.data.get(i).subList(0, n));
+			result.data.add(subset);
+		}
+		result.setColNames(this.getColNames());
+		result.setColTypes(this.colTypes);
+		return result;
 	}
 	
 	public MyDataFrame tail(int n) {
-		ArrayList<Object> col0 = new ArrayList<Object>(this.col0.subList(this.col0.size()-n, this.col0.size()));
-		ArrayList<Object> col1 = new ArrayList<Object>(this.col1.subList(this.col1.size()-n, this.col1.size()));
-		ArrayList<Object> col2 = new ArrayList<Object>(this.col2.subList(this.col2.size()-n, this.col2.size()));
-		ArrayList<Object> col3 = new ArrayList<Object>(this.col3.subList(this.col3.size()-n, this.col3.size()));
-		ArrayList<Object> col4 = new ArrayList<Object>(this.col4.subList(this.col4.size()-n, this.col4.size()));
-		
-		return new MyDataFrame(col0, col1, col2, col3, col4, this.getColNames());
+		MyDataFrame result = new MyDataFrame();
+		for(int i = 0; i < this.data.size(); i++) {
+			ArrayList<?> subset  =  new ArrayList<>(this.data.get(i).subList(this.data.get(i).size()-n, this.data.get(i).size()));
+			result.data.add(subset);
+		}
+		result.setColNames(this.getColNames());
+		result.setColTypes(this.colTypes);
+		return result;
 	}
 
 
 	public String dType(int index) {
-		String[] columns = {"String", "String", "Integer", "String", "Integer"};
-		if(index > 5 | index < 0 ) {
-			return "Not a valid index.";
-		}
-		return columns[index];
+		String colName = "";
+        for (String key : this.colNames.keySet()){
+        		if(this.colNames.get(key).equals(index)) {
+        			colName = key;
+        		}
+        }
+        return(this.dType(colName));
 	}
 	
 
 	public String dType(String name) {
-		Hashtable<String, String> hashtable = new Hashtable<String, String>();
-		hashtable.put("state","String");
-		hashtable.put("gender","String");
-		hashtable.put("name","String");
-		hashtable.put("year","Integer");
-		hashtable.put("count","Integer");
-		if(!hashtable.containsKey(name)) {
+		if(!this.colTypes.containsKey(name)) {
 			return "Not a valid index.";
 		}
-		return hashtable.get(name);
+		return this.colTypes.get(name);
 	}
 
 	public MyDataFrame slice(int index) {
 		MyDataFrame result = new MyDataFrame();
-		if(index == 0) {
-			result.setCol0(this.col0);
-		}
-		if(index == 1) {
-			result.setCol1(this.col1);
-		}
-		if(index == 2) {
-			result.setCol2(this.col2);
-		}
-		if(index == 3) {
-			result.setCol3(this.col3);
-		}
-		if(index == 4) {
-			result.setCol4(this.col4);
-		}
+		result.data.add(this.data.get(index));
+		String colName = "";
+        for (String key : this.colNames.keySet()){
+        		if(this.colNames.get(key).equals(index)) {
+        			colName = key;
+        		}
+        }
+        result.colNames.put(colName, 0);
+        result.colTypes.put(colName, this.colTypes.get(colName));
 		return result;
 	}	
 		
 	public MyDataFrame slice(String name) {
-		MyDataFrame result = new MyDataFrame();
 		int index = this.getColNames().get(name);
-		if(index == 0) {
-			result.setCol0(this.col0);
-		}
-		if(index == 1) {
-			result.setCol1(this.col1);
-		}
-		if(index == 2) {
-			result.setCol2(this.col2);
-		}
-		if(index == 3) {
-			result.setCol3(this.col3);
-		}
-		if(index == 4) {
-			result.setCol4(this.col4);
-		}
-		return result;
+		return this.slice(index);
 	}
 	
 	public MyDataFrame slice(int[] indexArr) {
 		MyDataFrame result = new MyDataFrame();
+		int colNum = 0; 
 		for(int index: indexArr) {
-			if(index == 0) {
-				result.setCol0(this.col0);
-			}
-			if(index == 1) {
-				result.setCol1(this.col1);
-			}
-			if(index == 2) {
-				result.setCol2(this.col2);
-			}
-			if(index == 3) {
-				result.setCol3(this.col3);
-			}
-			if(index == 4) {
-				result.setCol4(this.col4);
-			}
+			String key = this.slice(index).getColNames().keySet().toString();
+			key = key.replaceAll("\\p{P}","");
+			result.colNames.put(key, colNum);
+			result.data.add(this.slice(index).data.get(0));
+			result.colTypes.put(key, this.colTypes.get(key));
+			colNum++;
 		}
 		return result;
 	}
 
 	public MyDataFrame slice(String[] nameArr) {
-		MyDataFrame result = new MyDataFrame();
+		int[] convert = new int[nameArr.length];
+		int i = 0;
 		for(String index: nameArr) {
-			if(this.getColNames().get(index) == 0) {
-				result.setCol0(this.col0);
-			}
-			if(this.getColNames().get(index) == 1) {
-				result.setCol1(this.col1);
-			}
-			if(this.getColNames().get(index) == 2) {
-				result.setCol2(this.col2);
-			}
-			if(this.getColNames().get(index) == 3) {
-				result.setCol3(this.col3);
-			}
-			if(this.getColNames().get(index) == 4) {
-				result.setCol4(this.col4);
-			}
+			convert[i] = this.colNames.get(index);
+			i++;
 		}
-	return result;
+	return this.slice(convert);
 }
 //	
 //	public MyDataFrame filter(String col, String op, Object o) {
@@ -202,30 +123,25 @@ public class MyDataFrame {
 //	}
 //	
 	public MyDataFrame loc(int index) {
-	    ArrayList<Object> col0 = new ArrayList<Object>();
-	    ArrayList<Object> col1 = new ArrayList<Object> ();
-	    ArrayList<Object> col2 = new ArrayList<Object> ();
-	    ArrayList<Object> col3 = new ArrayList<Object> ();
-	    ArrayList<Object> col4 = new ArrayList<Object> ();
-	    
-	    
-	    col0.add(this.col0.get(index));
-	    col1.add(this.col1.get(index));
-	    col2.add(this.col2.get(index));
-	    col3.add(this.col3.get(index));
-	    col4.add(this.col4.get(index));
-
-	    return(new MyDataFrame(col0, col1, col2, col3, col4, this.getColNames()));
+		MyDataFrame result = new MyDataFrame();
+		for(int i = 0; i < this.data.size(); i++) { // for every column
+			ArrayList<?> subset  =  new ArrayList<>(this.data.get(i).subList(index, index + 1));
+			result.data.add(subset);
+		}
+		result.setColNames(this.getColNames());
+		result.setColTypes(this.colTypes);
+	    return(result);
 	}
 	
 	public MyDataFrame loc(int from, int to) {
-		ArrayList<Object> col0 = new ArrayList<Object>(this.col0.subList(from, to));
-		ArrayList<Object> col1 = new ArrayList<Object>(this.col1.subList(from, to));
-		ArrayList<Object> col2 = new ArrayList<Object>(this.col2.subList(from, to));
-		ArrayList<Object> col3 = new ArrayList<Object>(this.col3.subList(from, to));
-		ArrayList<Object> col4 = new ArrayList<Object>(this.col4.subList(from, to));
-	    
-		return new MyDataFrame(col0, col1, col2, col3, col4, this.getColNames());
+		MyDataFrame result = new MyDataFrame();
+		for(int i = 0; i < this.data.size(); i++) { // for every column
+			ArrayList<?> subset  =  new ArrayList<>(this.data.get(i).subList(from, to));
+			result.data.add(subset);
+		}
+		result.setColNames(this.getColNames());
+		result.setColTypes(this.colTypes);
+	    return(result);
 	}
 
 //	
@@ -237,23 +153,37 @@ public class MyDataFrame {
 //		return sortedData;
 //	}
 //	
+	@SuppressWarnings("unchecked")
 	public Object getMin(int index) {
-		@SuppressWarnings("unchecked")
-		ArrayList<Integer> meow = (ArrayList<Integer>)(ArrayList<?>) this.col2;
-		return Collections.max(meow);
+		if(this.dType(index).equals("Integer")) {
+			return Collections.min((ArrayList<Integer>)(ArrayList<?>) this.slice(index).data.get(0));
+		}
+		return Collections.min((ArrayList<String>)(ArrayList<?>) this.slice(index).data.get(0));
 	}
-//	
-//	public Object getMin(String label) {
-//		return min;
-//	}
-//	
-//	public Object getMax(int index) {
-//		return max;
-//	}
-//	
-//	public Object getMax(String label) {
-//		return max;
-//	} 
+	
+	@SuppressWarnings("unchecked")
+	public Object getMin(String label) {
+		if(this.dType(label).equals("Integer")) {
+			return Collections.min((ArrayList<Integer>)(ArrayList<?>) this.slice(label).data.get(0));
+		}
+		return Collections.min((ArrayList<String>)(ArrayList<?>) this.slice(label).data.get(0));
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Object getMax(int index) {
+		if(this.dType(index).equals("Integer")) {
+			return Collections.max((ArrayList<Integer>)(ArrayList<?>) this.slice(index).data.get(0));
+		}
+		return Collections.max((ArrayList<String>)(ArrayList<?>) this.slice(index).data.get(0));
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Object getMax(String label) {
+		if(this.dType(label).equals("Integer")) {
+			return Collections.max((ArrayList<Integer>)(ArrayList<?>) this.slice(label).data.get(0));
+		}
+		return Collections.max((ArrayList<String>)(ArrayList<?>) this.slice(label).data.get(0));
+	} 
 
 	
 }
