@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -55,23 +56,30 @@ public class MyPandas {
 		writer.close();
     }
     
-//    public MyDataFrame concat(MyDataFrame df1, MyDataFrame df2) {
-//    		MyDataFrame copy = new MyDataFrame();
-//    		for(int i = 0; i < df1.data.size(); i++) {
-//    			ArrayList<?> colCopy = new ArrayList<Object>(df1.slice(i).data.get(0));
-//    			copy.data.add(colCopy);
-//    		}
-//    		
-//    		for(int i = 0; i < df1.data.size(); i++) {
-//    			copy.data.get(i).addAll(df2.data.get(i));
-//    		}
-//    		
-//    		result.getCol0().addAll(df2.getCol0());
-//    		result.getCol1().addAll(df2.getCol1());
-//    		result.getCol2().addAll(df2.getCol2());
-//    		result.getCol3().addAll(df2.getCol3());
-//    		result.getCol4().addAll(df2.getCol4());
-//    		
-//    		return result;
-//    }
+    @SuppressWarnings("unchecked")
+	public MyDataFrame concat(MyDataFrame df1, MyDataFrame df2) throws Exception {
+    		MyDataFrame result = new MyDataFrame();
+    		if (df1.data.size() == df2.data.size()) {
+    			for(int i = 0; i < df1.data.size(); i++) {
+    				if (df1.dType(i).equals("String")) {
+    					ArrayList<String> both  =  new ArrayList<String> ();
+    					both.addAll((Collection<? extends String>) df1.data.get(i)); 
+    					both.addAll((Collection<? extends String>) df2.data.get(i));
+    					result.data.add(both);
+    				}
+    				if (df1.dType(i).equals("Integer")) {
+    					ArrayList<Integer> both  =  new ArrayList<Integer> ();
+    					both.addAll((Collection<? extends Integer>) df1.data.get(i)); 
+    					both.addAll((Collection<? extends Integer>) df2.data.get(i));
+    					result.data.add(both);
+    				}
+        		}
+        		result.setColNames(df1.getColNames());
+        		result.setColTypes(df1.colTypes);
+        		return result;
+    		}
+    		else {
+    			throw new Exception("Your dataframes do not have the same number of columns");
+    		}
+    }
 }

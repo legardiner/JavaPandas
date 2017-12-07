@@ -2,6 +2,7 @@ package mainPKG;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.stream.IntStream;
 
 
 public class MyDataFrame {
@@ -20,16 +21,17 @@ public class MyDataFrame {
 
     public MyDataFrame() {
 		this.data = new ArrayList<ArrayList<?>>();
-}
+    }
+    
     public HashMap<String,Integer> getColNames() {
 		return(this.colNames);
     }
     
-    private void setColNames(HashMap<String,Integer> colNames) {
+    void setColNames(HashMap<String,Integer> colNames) {
 		this.colNames = colNames;
     }
     
-    private void setColTypes(HashMap<String,String> colTypes) {
+    void setColTypes(HashMap<String,String> colTypes) {
 		this.colTypes = colTypes;
     }
     
@@ -117,11 +119,91 @@ public class MyDataFrame {
 		}
 	return this.slice(convert);
 }
-//	
-//	public MyDataFrame filter(String col, String op, Object o) {
-//		return filteredData;
-//	}
-//	
+	
+	public MyDataFrame filter(String col, String op, Object o) {
+		MyDataFrame result = new MyDataFrame();
+		ArrayList<String> filterState = new ArrayList<String> ();
+	    ArrayList<String> filterGender = new ArrayList<String> ();
+	    ArrayList<String> filterName = new ArrayList<String> ();
+	    ArrayList<Integer> filterYear = new ArrayList<Integer>();
+	    ArrayList<Integer> filterCount = new ArrayList<Integer> ();
+		Integer colNum = this.colNames.get(col);
+		if (op.equals("=") && this.dType(colNum).equals("String")) {
+			for(int row = 0; row < this.data.get(colNum).size(); row++) {
+				if (((String) this.data.get(colNum).get(row)).replaceAll("^\"|\"$", "").equals(o)) {
+		    			filterState.add((String) this.data.get(0).get(row));
+		    			filterGender.add((String) this.data.get(1).get(row));
+		    			filterYear.add((Integer) this.data.get(2).get(row));
+		    			filterName.add((String) this.data.get(3).get(row));
+		    			filterCount.add((Integer) this.data.get(4).get(row));
+				}
+			}
+		}
+		else if (op.equals("=") && this.dType(colNum).equals("Integer")) {
+			for(int row = 0; row < this.data.get(colNum).size(); row++) {
+				if (this.data.get(colNum).get(row).equals(o)) {
+		    			filterState.add((String) this.data.get(0).get(row));
+		    			filterGender.add((String) this.data.get(1).get(row));
+		    			filterYear.add((Integer) this.data.get(2).get(row));
+		    			filterName.add((String) this.data.get(3).get(row));
+		    			filterCount.add((Integer) this.data.get(4).get(row));
+				}
+			}
+		}
+		else if (op.equals(">") && this.dType(colNum).equals("String")) {
+			for(int row = 0; row < this.data.get(colNum).size(); row++) {
+				if (((String) this.data.get(colNum).get(row)).replaceAll("^\"|\"$", "").compareTo((String) o) > 0) {
+		    			filterState.add((String) this.data.get(0).get(row));
+		    			filterGender.add((String) this.data.get(1).get(row));
+		    			filterYear.add((Integer) this.data.get(2).get(row));
+		    			filterName.add((String) this.data.get(3).get(row));
+		    			filterCount.add((Integer) this.data.get(4).get(row));
+				}
+			}
+		}
+		else if (op.equals(">") && this.dType(colNum).equals("Integer")) {
+			for(int row = 0; row < this.data.get(colNum).size(); row++) {
+				if (((Integer) this.data.get(colNum).get(row)).compareTo((Integer) o) > 0) {
+		    			filterState.add((String) this.data.get(0).get(row));
+		    			filterGender.add((String) this.data.get(1).get(row));
+		    			filterYear.add((Integer) this.data.get(2).get(row));
+		    			filterName.add((String) this.data.get(3).get(row));
+		    			filterCount.add((Integer) this.data.get(4).get(row));
+				}
+			}
+		}
+		else if (op.equals("<") && this.dType(colNum).equals("String")) {
+			for(int row = 0; row < this.data.get(colNum).size(); row++) {
+				if (((String) this.data.get(colNum).get(row)).replaceAll("^\"|\"$", "").compareTo((String) o) < 0) {
+		    			filterState.add((String) this.data.get(0).get(row));
+		    			filterGender.add((String) this.data.get(1).get(row));
+		    			filterYear.add((Integer) this.data.get(2).get(row));
+		    			filterName.add((String) this.data.get(3).get(row));
+		    			filterCount.add((Integer) this.data.get(4).get(row));
+				}
+			}
+		}
+		else if (op.equals("<") && this.dType(colNum).equals("Integer")) {
+			for(int row = 0; row < this.data.get(colNum).size(); row++) {
+				if (((Integer) this.data.get(colNum).get(row)).compareTo((Integer) o) < 0) {
+		    			filterState.add((String) this.data.get(0).get(row));
+		    			filterGender.add((String) this.data.get(1).get(row));
+		    			filterYear.add((Integer) this.data.get(2).get(row));
+		    			filterName.add((String) this.data.get(3).get(row));
+		    			filterCount.add((Integer) this.data.get(4).get(row));
+				}
+			}
+		}
+		result.data.add(filterState);
+		result.data.add(filterGender);
+		result.data.add(filterYear);
+		result.data.add(filterName);
+		result.data.add(filterCount);
+		result.setColNames(this.getColNames());
+		result.setColTypes(this.colTypes);
+		return(result);
+	}
+	
 	public MyDataFrame loc(int index) {
 		MyDataFrame result = new MyDataFrame();
 		for(int i = 0; i < this.data.size(); i++) { // for every column
@@ -144,11 +226,42 @@ public class MyDataFrame {
 	    return(result);
 	}
 
-//	
-//	public MyDataFrame sort(int index) {
-//		return sortedData;
-//	}
-//	
+	
+	public MyDataFrame sort(int index) {
+		int[] sortedIndices = null;
+		if (this.dType(index).equals("String")) {
+			sortedIndices = IntStream.range(0, this.data.get(index).size())
+		                .boxed().sorted((i, j) -> ((String) this.data.get(index).get(i)).compareTo((String) this.data.get(index).get(j)) )
+		                .mapToInt(ele -> ele).toArray();
+		}
+		else if (this.dType(index).equals("Integer")) {
+			sortedIndices = IntStream.range(0, this.data.get(index).size())
+	                .boxed().sorted((i, j) -> ((Integer) this.data.get(index).get(i)).compareTo((Integer) this.data.get(index).get(j)) )
+	                .mapToInt(ele -> ele).toArray();
+		}
+		MyDataFrame result = new MyDataFrame();
+		ArrayList<String> filterState = new ArrayList<String> ();
+	    ArrayList<String> filterGender = new ArrayList<String> ();
+	    ArrayList<String> filterName = new ArrayList<String> ();
+	    ArrayList<Integer> filterYear = new ArrayList<Integer>();
+	    ArrayList<Integer> filterCount = new ArrayList<Integer> ();
+		for( int row : sortedIndices ) {
+			filterState.add((String) this.data.get(0).get(row));
+			filterGender.add((String) this.data.get(1).get(row));
+			filterYear.add((Integer) this.data.get(2).get(row));
+			filterName.add((String) this.data.get(3).get(row));
+			filterCount.add((Integer) this.data.get(4).get(row));
+		}
+		result.data.add(filterState);
+		result.data.add(filterGender);
+		result.data.add(filterYear);
+		result.data.add(filterName);
+		result.data.add(filterCount);
+		result.setColNames(this.getColNames());
+		result.setColTypes(this.colTypes);
+		return result;
+	}
+	
 //	public MyDataFrame sort(String name) {
 //		return sortedData;
 //	}
