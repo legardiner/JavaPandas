@@ -262,9 +262,10 @@ public class MyDataFrame {
 		return result;
 	}
 	
-//	public MyDataFrame sort(String name) {
-//		return sortedData;
-//	}
+	public MyDataFrame sort(String name) {
+		int index = this.getColNames().get(name);
+		return this.sort(index);
+	}
 //	
 	@SuppressWarnings("unchecked")
 	public Object getMin(int index) {
