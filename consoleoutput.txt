@@ -1,0 +1,74 @@
+
+CONCAT
+Original column two
+[1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1911]
+Column two after concat
+[1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1911, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1911]
+
+HEAD
+Original column two
+[1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1911]
+Column two after head
+[1910, 1910, 1910, 1910]
+
+TAIL
+Original column two
+[1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1911]
+Column two after tail
+[1910, 1910, 1910, 1911]
+
+DTYPE
+dType of column two and of state column
+Integer
+String
+
+SLICING
+Slice columns by column name and index and show includes columns in new data frame
+{sex=String}
+{sex=String}
+{year=Integer, sex=String}
+{occurrences=Integer, sex=String}
+
+FILTERING
+Original state, year, and name column
+["AK", "AK", "AK", "AK", "AK", "AK", "AK", "AK", "AK", "AK", "AK", "AK", "AK", "AK", "AK", "AK", "AK", "AK"]
+[1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1911, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1911]
+["Mary", "Annie", "Anna", "Margaret", "Helen", "Elsie", "Lucy", "Dorothy", "Mary", "Mary", "Annie", "Anna", "Margaret", "Helen", "Elsie", "Lucy", "Dorothy", "Mary"]
+State and name column before and after filter on state = AK
+["AK", "AK", "AK", "AK", "AK", "AK", "AK", "AK", "AK", "AK", "AK", "AK", "AK", "AK", "AK", "AK", "AK", "AK"]
+["Mary", "Annie", "Anna", "Margaret", "Helen", "Elsie", "Lucy", "Dorothy", "Mary", "Mary", "Annie", "Anna", "Margaret", "Helen", "Elsie", "Lucy", "Dorothy", "Mary"]
+Year and column before and after filter year < 1911
+[1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910]
+["Mary", "Annie", "Anna", "Margaret", "Helen", "Elsie", "Lucy", "Dorothy", "Mary", "Annie", "Anna", "Margaret", "Helen", "Elsie", "Lucy", "Dorothy"]
+Year and name column before after filter name > Dorothy
+[1910, 1910, 1910, 1910, 1910, 1911, 1910, 1910, 1910, 1910, 1910, 1911]
+["Mary", "Margaret", "Helen", "Elsie", "Lucy", "Mary", "Mary", "Margaret", "Helen", "Elsie", "Lucy", "Mary"]
+
+INDEXING
+Original name column
+["Mary", "Annie", "Anna", "Margaret", "Helen", "Elsie", "Lucy", "Dorothy", "Mary", "Mary", "Annie", "Anna", "Margaret", "Helen", "Elsie", "Lucy", "Dorothy", "Mary"]
+Name column after indexing on row 3 (index 2) with loc
+["Anna"]
+Name column after indexing on row 3 through 5 (index 2 through 5) with loc
+["Anna", "Margaret", "Helen"]
+
+SORTING
+Orignial dataframe
+[1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1911, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1911]
+["Mary", "Annie", "Anna", "Margaret", "Helen", "Elsie", "Lucy", "Dorothy", "Mary", "Mary", "Annie", "Anna", "Margaret", "Helen", "Elsie", "Lucy", "Dorothy", "Mary"]
+Sorted by year
+[1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1911, 1911]
+["Mary", "Annie", "Anna", "Margaret", "Helen", "Elsie", "Lucy", "Dorothy", "Mary", "Annie", "Anna", "Margaret", "Helen", "Elsie", "Lucy", "Dorothy", "Mary", "Mary"]
+Sorted by name
+[1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1910, 1911, 1910, 1911]
+["Anna", "Anna", "Annie", "Annie", "Dorothy", "Dorothy", "Elsie", "Elsie", "Helen", "Helen", "Lucy", "Lucy", "Margaret", "Margaret", "Mary", "Mary", "Mary", "Mary"]
+
+GETMIN
+Get minimum year
+1910
+Get minimum name
+"Anna"
+Get maximum year
+1911
+Get maximum name
+"Mary"
